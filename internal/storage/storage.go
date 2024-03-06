@@ -11,6 +11,7 @@ var (
 	ErrUserNotExist = errors.New("user not exist")
 )
 
+// Storage defines methods for performing CRUD operations on user data in storage.
 type Storage interface {
 	CreateUser(ctx context.Context, user *User) error
 	UpdateUser(ctx context.Context, user *UserDB) error
