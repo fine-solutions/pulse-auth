@@ -1,13 +1,10 @@
 package main
 
 import (
-	"context"
 	"log/slog"
 	"os"
 	"pulse-auth/internal/config"
-	"pulse-auth/internal/storage"
 	"pulse-auth/internal/storage/postgres"
-	"time"
 )
 
 const (
@@ -24,19 +21,12 @@ func main() {
 	log.Info("Start server", slog.String("address", cfg.Address))
 	log.Debug("Debug mode enable")
 
-	db, err := postgres.New(log, cfg)
+	_, err := postgres.New(log, cfg)
 	if err != nil {
 		log.Error("Can't init database", err)
 		os.Exit(1)
 	}
 	log.Info("Success connect to database")
-
-	db.CreateUser(context.Background(), &storage.User{
-		Username:     "Nikita",
-		PasswordHash: "asdasd",
-		Email:        "some@email",
-		CreatedAt:    time.Now(),
-	})
 }
 
 func setupLogger(env string) *slog.Logger {
