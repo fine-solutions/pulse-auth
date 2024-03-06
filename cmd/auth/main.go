@@ -4,6 +4,7 @@ import (
 	"log/slog"
 	"os"
 	"pulse-auth/internal/config"
+	"pulse-auth/internal/storage/postgres"
 )
 
 const (
@@ -19,6 +20,13 @@ func main() {
 
 	log.Info("Start server", slog.String("address", cfg.Address))
 	log.Debug("Debug mode enable")
+
+	_, err := postgres.New(log, cfg)
+	if err != nil {
+		log.Error("Can't init database", err)
+		os.Exit(1)
+	}
+	log.Info("Success connect to database")
 }
 
 func setupLogger(env string) *slog.Logger {
