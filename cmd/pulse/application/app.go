@@ -61,6 +61,7 @@ func (a *App) constructEnv(ctx context.Context) (*env, error) {
 	userService := &user.ServiceImpl{
 		Storage:        db,
 		TokenGenerator: tokenGenerator,
+		Logger:         a.Logger,
 	}
 
 	return &env{
