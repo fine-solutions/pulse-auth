@@ -1,0 +1,20 @@
+logger:
+  level: "debug"
+  encoding: "console"
+  path: "stdout"
+  environment: "dev"
+
+public_server:
+  enable: true
+  endpoint: "localhost"
+  port: 8080
+
+admin_server:
+  enable: true
+  endpoint: "localhost"
+  port: 8081
+
+application:
+  app: "pulse"
+  salt_value: "xamah6Ae"
+#  graceful_shutdown_timeout: 15
