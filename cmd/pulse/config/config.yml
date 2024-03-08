@@ -16,5 +16,5 @@ admin_server:
 
 application:
   app: "pulse"
-  salt_value: "xamah6Ae"
+  salt_value: "xamah6Ael!iat0n"
 #  graceful_shutdown_timeout: 15
