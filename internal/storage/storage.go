@@ -3,35 +3,26 @@ package storage
 import (
 	"context"
 	"errors"
-	"github.com/google/uuid"
-	"time"
+	"pulse-auth/internal/model"
 )
 
-var (
-	ErrUserNotExist = errors.New("user not exist")
-)
+var ErrUserNotExist = errors.New("user not exist")
 
-// Storage defines methods for performing CRUD operations on user data in storage.
 type Storage interface {
-	CreateUser(ctx context.Context, user *User) error
-	UpdateUser(ctx context.Context, user *UserDB) error
-	GetUserByUsername(ctx context.Context, username string) (*UserDB, error)
-	GetUserByID(ctx context.Context, id uuid.UUID) (*UserDB, error)
-	GetUsers(ctx context.Context) ([]*UserDB, error)
-	DeleteUser(ctx context.Context, user *UserDB) error
+	User() UserRepository
+	Token() TokenRepository
 }
 
-type User struct {
-	Username     string    `db:"username" json:"username"`
-	PasswordHash string    `db:"password_hash" json:"-"`
-	Email        string    `db:"email" json:"email"`
-	CreatedAt    time.Time `db:"created_at" json:"created_at"`
+type UserRepository interface {
+	LoginUser(ctx context.Context, userLogin *model.UserLogin) (*model.User, error)
+	CreateUser(ctx context.Context, user *model.UserRegister) (*model.User, error)
+	GetUserByID(ctx context.Context, id model.UserID) (*model.User, error)
+	SearchUser(ctx context.Context, firstName, lastName string) (*model.User, error)
 }
 
-type UserDB struct {
-	ID           uuid.UUID `db:"id" json:"id"`
-	Username     string    `db:"username" json:"username"`
-	PasswordHash string    `db:"password_hash" json:"-"`
-	Email        string    `db:"email" json:"email"`
-	CreatedAt    time.Time `db:"created_at" json:"created_at"`
+type TokenRepository interface {
+	GetCurrentUserToken(ctx context.Context, id model.UserID) (*model.Token, error)
+	CreateToken(ctx context.Context, token *model.TokenWithMetadata) (*model.Token, error)
+	RevokeToken(ctx context.Context, token *model.Token) error
+	RefreshToken(ctx context.Context, token *model.TokenWithMetadata) (*model.Token, error)
 }
