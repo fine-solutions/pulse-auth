@@ -3,6 +3,7 @@ package user
 import (
 	"context"
 	"fmt"
+	"go.uber.org/zap"
 	"pulse-auth/internal/model"
 	"pulse-auth/internal/storage"
 	"pulse-auth/internal/token"
@@ -19,6 +20,7 @@ type Service interface {
 type ServiceImpl struct {
 	Storage        storage.Storage
 	TokenGenerator *token.Generator
+	Logger         *zap.Logger
 }
 
 type LoginParams struct {
@@ -31,7 +33,6 @@ func (s *ServiceImpl) Login(ctx context.Context, params *LoginParams) (*model.To
 	if err != nil {
 		return nil, fmt.Errorf("hash password: %w", err)
 	}
-
 	user, err := s.Storage.User().LoginUser(ctx, &model.UserLogin{
 		Username:       params.Username,
 		HashedPassword: hashedPassword,
