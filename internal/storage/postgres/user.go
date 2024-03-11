@@ -60,7 +60,6 @@ func (s *Storage) CreateUser(ctx context.Context, params *model.UserRegister) (*
 }
 
 func (s *Storage) GetUserByID(ctx context.Context, id model.UserID) (*model.User, error) {
-	s.logger.Sugar().Infof("some info for debug: %v", id)
 	sql, args, err := sq.Select(userFields...).
 		From(UserTable).
 		Where(sq.Eq{
