@@ -35,7 +35,7 @@ func (h *Handler) writeError(ctx context.Context, w http.ResponseWriter, err err
 		})
 
 	if err != nil {
-		http.Error(w, utils.InternalErrorMessage, http.StatusInternalServerError) // TODO: make error mapping
+		http.Error(w, utils.InternalErrorMessage, http.StatusInternalServerError)
 	}
 }
 
@@ -43,7 +43,7 @@ func writeResponse(w http.ResponseWriter, response any) {
 	w.Header().Set(headers.ContentType, "application/json")
 	err := json.NewEncoder(w).Encode(response)
 	if err != nil {
-		http.Error(w, utils.InternalErrorMessage, http.StatusInternalServerError) // TODO: make error mapping
+		http.Error(w, utils.InternalErrorMessage, http.StatusInternalServerError)
 	}
 }
 

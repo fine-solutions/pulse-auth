@@ -11,8 +11,6 @@ import (
 	_ "github.com/jackc/pgx/v5/stdlib"
 )
 
-// TODO: tests
-
 func (s *Storage) LoginUser(ctx context.Context, userLogin *model.UserLogin) (*model.User, error) {
 	sql, args, err := sq.Select(userFields...).
 		From(UserTable).
