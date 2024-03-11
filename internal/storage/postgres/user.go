@@ -13,6 +13,7 @@ import (
 
 // TODO: tests
 
+// LoginUser takes a user login input and checks the database for a matching user.
 func (s *Storage) LoginUser(ctx context.Context, userLogin *model.UserLogin) (*model.User, error) {
 	sql, args, err := sq.Select(userFields...).
 		From(UserTable).
@@ -35,6 +36,7 @@ func (s *Storage) LoginUser(ctx context.Context, userLogin *model.UserLogin) (*m
 	return userEntityToModel(entity), nil
 }
 
+// CreateUser takes in user registration params, validates them and creates a new user in the database.
 func (s *Storage) CreateUser(ctx context.Context, params *model.UserRegister) (*model.User, error) {
 	err := params.Validate()
 	if err != nil {
@@ -61,6 +63,7 @@ func (s *Storage) CreateUser(ctx context.Context, params *model.UserRegister) (*
 	return userEntityToModel(entity), nil
 }
 
+// GetUserByID retrieve a user by ID from the storage with additional debug info logging.
 func (s *Storage) GetUserByID(ctx context.Context, id model.UserID) (*model.User, error) {
 	s.logger.Sugar().Infof("some info for debug: %v", id)
 	sql, args, err := sq.Select(userFields...).
@@ -84,6 +87,7 @@ func (s *Storage) GetUserByID(ctx context.Context, id model.UserID) (*model.User
 	return userEntityToModel(entity), nil
 }
 
+// SearchUser searches for a user in the storage using first and last name.
 func (s *Storage) SearchUser(ctx context.Context, firstName, lastName string) (*model.User, error) {
 	sql, args, err := sq.Select(userFields...).
 		From(UserTable).
@@ -120,6 +124,7 @@ type userEntity struct {
 	CreatedAt      time.Time `db:"created_at"`
 }
 
+// userEntityToModel converts a user entity to a model User instance, mapping the attributes accordingly.
 func userEntityToModel(entity userEntity) *model.User {
 	return &model.User{
 		UserID:     model.UserID(entity.ID),
