@@ -11,8 +11,6 @@ import (
 	_ "github.com/jackc/pgx/v5/stdlib"
 )
 
-// TODO: tests
-
 // LoginUser takes a user login input and checks the database for a matching user.
 func (s *Storage) LoginUser(ctx context.Context, userLogin *model.UserLogin) (*model.User, error) {
 	sql, args, err := sq.Select(userFields...).
@@ -65,7 +63,6 @@ func (s *Storage) CreateUser(ctx context.Context, params *model.UserRegister) (*
 
 // GetUserByID retrieve a user by ID from the storage with additional debug info logging.
 func (s *Storage) GetUserByID(ctx context.Context, id model.UserID) (*model.User, error) {
-	s.logger.Sugar().Infof("some info for debug: %v", id)
 	sql, args, err := sq.Select(userFields...).
 		From(UserTable).
 		Where(sq.Eq{
