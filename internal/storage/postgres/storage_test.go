@@ -88,9 +88,9 @@ func TestUser(t *testing.T) {
 	if err != nil {
 		t.Error("hash password:", err)
 	}
-	id := utils.GenerateUUID()
+	userID := utils.GenerateUUID()
 	u := &model.UserRegister{
-		ID:             id,
+		ID:             userID,
 		Username:       username,
 		HashedPassword: hashedPassword,
 	}
@@ -110,9 +110,9 @@ func TestUser(t *testing.T) {
 		t.Error("can't user login", err)
 	}
 
-	userById, err := db.GetUserByID(context.Background(), model.UserID(id))
+	userById, err := db.GetUserByID(context.Background(), model.UserID(userID))
 	if err != nil {
-		t.Error("can't get uesr by id", err)
+		t.Error("can't get uesr by userID", err)
 	}
 
 	assert.Equal(t, userFromDb, userFromLogin)
