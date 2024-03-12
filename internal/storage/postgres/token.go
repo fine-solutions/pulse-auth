@@ -9,6 +9,7 @@ import (
 	"time"
 )
 
+// GetCurrentUserToken get current user token from storage based on user ID.
 func (s *Storage) GetCurrentUserToken(ctx context.Context, id model.UserID) (*model.Token, error) {
 	sql, args, err := sq.Select(tokenFields...).
 		From(TokenTable).
@@ -36,6 +37,7 @@ func (s *Storage) GetCurrentUserToken(ctx context.Context, id model.UserID) (*mo
 	return tokenEntityToModel(entity), nil
 }
 
+// CreateToken creates a token with the provided parameters and stores it in the database, returning the generated token or an error message.
 func (s *Storage) CreateToken(ctx context.Context, params *model.TokenWithMetadata) (*model.Token, error) {
 	err := params.Validate()
 	if err != nil {
@@ -62,6 +64,7 @@ func (s *Storage) CreateToken(ctx context.Context, params *model.TokenWithMetada
 	return tokenEntityToModel(entity), nil
 }
 
+// RevokeToken revokes a token by updating the deleted_at field with the current timestamp in the database.
 func (s *Storage) RevokeToken(ctx context.Context, params *model.Token) error {
 	now := time.Now().Truncate(time.Millisecond)
 	sql, args, err := sq.Update(TokenTable).
@@ -97,6 +100,7 @@ func (s *Storage) RevokeToken(ctx context.Context, params *model.Token) error {
 	return nil
 }
 
+// RefreshToken updates the token's value in the database based on the provided parameters, returning the updated token or an error message.
 func (s *Storage) RefreshToken(ctx context.Context, params *model.TokenWithMetadata) (*model.Token, error) {
 	err := params.Validate()
 	if err != nil {
@@ -134,6 +138,7 @@ type tokenEntity struct {
 	AlivedAt  time.Time `db:"alived_at"`
 }
 
+// tokenEntityToModel converts a token entity to a token model and returns a pointer to it.
 func tokenEntityToModel(entity tokenEntity) *model.Token {
 	return &model.Token{
 		UserID: model.UserID(entity.UserID),
