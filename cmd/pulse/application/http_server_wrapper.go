@@ -54,7 +54,6 @@ func NewHTTPServerWrapper(logger *zap.Logger, opts ...HTTPServerOption) *HTTPSer
 	var servers []*http.Server
 
 	if options.adminServerOption != nil {
-		// todo make admin server elegant
 		servers = append(servers, newNetHTTPServer(logger, options.adminServerOption.Port, nil))
 	}
 
@@ -108,7 +107,6 @@ func (h *HTTPServerWrapper) GracefulStop() []func() error {
 }
 
 func newNetHTTPServer(logger *zap.Logger, port int, incomeMux *chi.Mux) *http.Server {
-	// TODO: admin server wrapper
 	mux := chi.NewMux()
 	mux.Use(LoggerMiddleware(logger))
 	if incomeMux != nil {
@@ -119,7 +117,7 @@ func newNetHTTPServer(logger *zap.Logger, port int, incomeMux *chi.Mux) *http.Se
 	return &http.Server{
 		Addr:     fmt.Sprintf(":%d", port),
 		Handler:  mux,
-		ErrorLog: log.New(os.Stderr, "", 0), // TODO
+		ErrorLog: log.New(os.Stderr, "", 0),
 	}
 }
 
