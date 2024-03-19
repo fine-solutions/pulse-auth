@@ -1,0 +1,32 @@
+name: Product Deploy
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  product-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Загрузка репозитория
+        uses: actions/checkout@v2
+      - name: Установка ключа для пользователя
+        run: |
+          set -eu
+          mkdir "$HOME/.ssh"
+          chmod 700 "$HOME/.ssh"
+          echo "${{ secrets.DEPLOY_KEY }}" > "$HOME/.ssh/id_rsa"
+          chmod 600 "$HOME/.ssh/id_rsa"
+      - name: Копирование настроек окружения
+        run: |
+          echo "${{ secrets.DEPLOY_ENV }}" > ".env"
+      - name: Развёртывание микросервиса аутентификации (auth)
+        run: |
+          ssh-keyscan -H pulse.fine-solutions.org >> ~/.ssh/known_hosts
+          export DOCKER_HOST="ssh://deploy@pulse.fine-solutions.org"
+          docker compose down
+          docker compose build          
+          docker compose up
+
