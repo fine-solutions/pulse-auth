@@ -22,12 +22,10 @@ jobs:
       - name: Копирование настроек окружения
         run: |
           echo "${{ secrets.DEPLOY_ENV }}" > ".env"
-      - name: Развёртывание микросервиса аутентификации (auth)
+      - name: Развёртывание базы данных и вспомогательных сервисов
         run: |
           ssh-keyscan -H pulse.fine-solutions.org >> ~/.ssh/known_hosts
           export DOCKER_HOST="ssh://deploy@pulse.fine-solutions.org"
-          cd auth
           docker compose down
           docker compose build
-          docker compose --env-file ../.env up
-
+          docker compose --env-file .env up

@@ -1,9 +1,0 @@
-version: "3.9"
-
-services:
-  db:
-    image: postgres:latest
-    container_name: "pulse_db"
-    ports:
-      - "5432:5432"
-    restart: unless-stopped
