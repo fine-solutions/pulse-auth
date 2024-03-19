@@ -4,10 +4,9 @@ services:
   db:
     image: postgres:latest
     container_name: "auth_postgres_db"
-    environment:
-      POSTGRES_DB: ${DB_NAME}
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    env_file:
+      - path: ./.env
+        required: true
     ports:
       - "5432:5432"
     restart: unless-stopped
@@ -15,10 +14,9 @@ services:
   test_db:
     image: postgres:latest
     container_name: "auth_postgres_test_db"
-    environment:
-      POSTGRES_DB: test_db
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    env_file:
+      - path: ./.env
+        required: true
     ports:
       - "5430:5432"
     restart: unless-stopped
@@ -26,10 +24,9 @@ services:
   pgAdmin:
     container_name: "auth_pg-admin"
     image: dpage/pgadmin4
-    environment:
-      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
-      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
-      PGADMIN_LISTEN_PORT: 8081
+    env_file:
+      - path: ./.env
+        required: true
     ports:
       - 8082:8081
     restart: unless-stopped
