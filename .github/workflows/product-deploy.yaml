@@ -28,6 +28,6 @@ jobs:
           export DOCKER_HOST="ssh://deploy@pulse.fine-solutions.org"
           cd auth
           docker compose down
-          docker compose build          
-          docker compose up
+          docker compose build
+          docker compose up --env-file .env --env-file .env.example
 
