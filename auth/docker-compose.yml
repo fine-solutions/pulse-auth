@@ -3,21 +3,7 @@ version: "3.9"
 services:
   db:
     image: postgres:latest
-    container_name: "auth_postgres_db"
+    container_name: "pulse_db"
     ports:
       - "5432:5432"
-    restart: unless-stopped
-
-  test_db:
-    image: postgres:latest
-    container_name: "auth_postgres_test_db"
-    ports:
-      - "5430:5432"
-    restart: unless-stopped
-
-  pgAdmin:
-    container_name: "auth_pg-admin"
-    image: dpage/pgadmin4
-    ports:
-      - 8082:8081
     restart: unless-stopped
