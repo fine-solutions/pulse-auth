@@ -1,8 +1,8 @@
 version: "3.9"
 
 services:
-  auth:
-    build: auth/.
+  account:
+    build: account/.
     environment:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
