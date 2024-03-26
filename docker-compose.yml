@@ -1,6 +1,12 @@
 version: "3.9"
 
 services:
+  auth:
+    build: auth/.
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
   db:
     image: postgres:16.2-alpine3.19
     restart: always
